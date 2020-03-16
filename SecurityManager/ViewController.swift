@@ -20,11 +20,12 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        title = "BR去中心化钱包密钥管理工具"
+        title = "密钥管理工具"
         sureButton.isHighlighted = true
         privateTextField.isEditable = false
         
-//        textDecrypt()
+        textDecrypt()
+        textEncrypt()
     }
     
     @IBAction func qrButtonAction(_ sender: Any) {
@@ -91,9 +92,17 @@ extension ViewController {
     func textDecrypt() {
         let cryptedText = "yUCfovFBI82XTZbSV+B+fetH6vn+lIYTMRCK8uPiJG3AAoMsncucRb1ckheUDw/Sgx1zjZdZgzvvxfnuAxBneg=="
         let key = "1234560000000000"
-        
+                
         let plainText = cryptedText.aesDecrypt(keyString: key, ivString: iv)
         print(plainText)
+    }
+    
+    func textEncrypt() {
+        let plainText = "5Jge5joc1hzVZtNpaw8CDEuubjL7PGzTXQn97gw7jAxFFpEu6Cv"
+        let key = "1234560000000000"
+        
+        let cryptedText = plainText.aesCrypt(keyString: key, ivString: iv)
+        print(cryptedText)
     }
     
     func textQRReader() {
@@ -102,13 +111,17 @@ extension ViewController {
 //        privatedEnTextField.stringValue = recognizeQRCode(targetImage: iconImage) ?? "can not recoginize"
     }
     
+}
+
+extension ViewController {
+
     func isValidInput() -> Bool {
         if privatedEnTextField.stringValue.isEmpty {
              ProgressHUD.showErrorWithStatus("密文私钥不能为空")
             return false
         }
         if pinTextField.stringValue.isEmpty {
-            ProgressHUD.showErrorWithStatus("钱包PIN码不能为空")
+            ProgressHUD.showErrorWithStatus("PIN码不能为空")
             return false
         }
         
